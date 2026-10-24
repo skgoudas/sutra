@@ -1,0 +1,7 @@
+id: hello-app
+default_unit: helpdesk
+max_deadline_ms: 20000
+fallback_text: "Sorry, I can't help with that right now. Please try again."
+eval_sample_rate: 1.0
+sticky_dispatch: true
+dispatch_rules: []

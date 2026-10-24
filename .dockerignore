@@ -1,0 +1,15 @@
+.git/
+.gitignore
+.pytest_cache/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.memories/
+.env
+deploy/**/.terraform/

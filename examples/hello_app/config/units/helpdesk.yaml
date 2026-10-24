@@ -1,0 +1,17 @@
+id: helpdesk
+version: 0.1.0
+description: Answers help-center questions and opens support tickets.
+engine: function
+entrypoint: "hello_app.units:build_helpdesk"
+min_auth_level: anonymous
+tools: [kb.search, ticket.create]
+models: [general]
+context:
+  instructions: helpdesk
+  history_turns: 4
+  total_input_tokens: 8000
+limits:
+  max_steps: 5
+  max_model_calls: 5
+  max_tool_calls: 4
+  timeout_ms: 15000

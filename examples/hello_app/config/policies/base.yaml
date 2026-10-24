@@ -1,0 +1,9 @@
+version: base-1
+rules:
+  - id: no-writes-on-kiosk
+    actions: [tool.invoke]
+    match:
+      resource.side_effect: write
+      context.channel: kiosk
+    effect: deny
+    reason_code: channel_read_only

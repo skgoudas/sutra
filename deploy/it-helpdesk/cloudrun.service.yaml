@@ -1,0 +1,48 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: it-helpdesk
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        # Session, idempotency, lock and confirmation stores are in-memory (per process).
+        # Keep a single instance until they are backed by a shared store.
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 40
+      timeoutSeconds: 300
+      containers:
+      - image: IMAGE_PLACEHOLDER
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: PROJECT_ID_PLACEHOLDER
+        - name: SUTRA_JWT_AUDIENCE
+          value: it-desk-app
+        - name: SUTRA_JWT_ISSUER
+          value: ISSUER_PLACEHOLDER
+        - name: SUTRA_TELEMETRY_BACKEND
+          value: otel
+        - name: SUTRA_TELEMETRY_SERVICE_NAME
+          value: it-helpdesk
+        - name: SUTRA_TELEMETRY_SERVICE_VERSION
+          value: "0.1.0"
+        - name: SUTRA_DEPLOYMENT_ENVIRONMENT
+          value: prod
+        # Set either SUTRA_JWKS_URL (recommended) or SUTRA_JWT_KEY.
+        - name: SUTRA_JWKS_URL
+          value: JWKS_URL_PLACEHOLDER
+        # Secrets are injected from Secret Manager.
+        - name: SUTRA_CONFIRMATION_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: it-helpdesk-confirmation-secret
+              key: latest
+        - name: SUTRA_SUBJECT_HASH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: it-helpdesk-subject-hash-key
+              key: latest
